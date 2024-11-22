@@ -9,19 +9,29 @@ namespace _01.introduction.controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ProductRepository _productRepository;
-        public ProductController()
+        private readonly IProductRepository _productRepository;
+        private readonly IProductRepository _productRepository1;
+
+        public ProductController(IProductRepository productRepository, IProductRepository productRepository1)
         {
-            _productRepository = new ProductRepository();
+            _productRepository = productRepository;
+            _productRepository1 = productRepository1;
         }
 
         [HttpPost("")]
         public IActionResult AddProduct([FromBody]ProductModel product)
         {
             _productRepository.AddProduct(product);
-            var products = _productRepository.GetAllProducts();
+            var products = _productRepository1.GetAllProducts();
 
             return Ok(products);
+        }
+
+        [HttpGet("")]
+        public IActionResult GetName()
+        {
+            var name = _productRepository.GetName();
+            return Ok(name);
         }
     }
 }

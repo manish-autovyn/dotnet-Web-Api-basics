@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using _01.introduction.Repository;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 
 namespace _01.introduction
@@ -11,6 +13,16 @@ namespace _01.introduction
         {
             services.AddControllers();
             services.AddTransient<CustomMiddleware1>();
+
+            //services.AddSingleton<IProductRepository, ProductRepository>();
+            //services.AddScoped<IProductRepository, ProductRepository>();
+
+            //services.AddTransient<IProductRepository, ProductRepository>();
+            //services.AddTransient<IProductRepository, TestRepository>();        // this will overwrite erlier registered service
+
+            // if we use try version then it will only register the service it it was not registered erlier
+            services.TryAddTransient<IProductRepository, ProductRepository>();
+            services.TryAddTransient<IProductRepository, TestRepository>();  
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

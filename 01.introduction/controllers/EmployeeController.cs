@@ -1,4 +1,5 @@
 ﻿using _01.introduction.Models;
+using _01.introduction.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,8 @@ namespace _01.introduction.controllers
         public IActionResult GetEmployees(int id)
         {
             Console.WriteLine("Request user id : " + id);
-            if(id == 0) return NotFound();
-            return Ok(new EmployeeModel() {Id = id, Name = "xrz"});
+            if (id == 0) return NotFound();
+            return Ok(new EmployeeModel() { Id = id, Name = "xrz" });
         }
 
         [Route("{id}/basic")]
@@ -31,6 +32,13 @@ namespace _01.introduction.controllers
         {
             if (id == 0) return NotFound();
             return new EmployeeModel() { Id = id, Name = "zrx" };
+        }
+
+        [HttpGet("name")]
+        public IActionResult GetName([FromServices] IProductRepository _productRepository)
+        {
+            var name = _productRepository.GetName();
+            return Ok(name);
         }
     }
 }
